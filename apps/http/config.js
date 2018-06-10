@@ -1,17 +1,12 @@
-/*
-HTTP Congif
-host: Array, host provided list
-domain: Array, bound domin name list
-proxy: String, reverse proxy URL
-*/
+// HTTP Congif
 
 const config = {
-    host: [
-        {
-            domain: ['wx.em.gs'],
-            proxy: 'http://localhost:3001'
-        }
-    ]
+	local: {
+		port: 3000
+	},
+	prod: {
+		port: 80
+	}
 }
 
 module.exports = config;

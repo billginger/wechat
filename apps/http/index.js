@@ -1,28 +1,19 @@
-const http = require('http');
-const httpProxy = require('http-proxy');
+global.dir = __dirname;
 
-const proxy = httpProxy.createProxyServer({});
+const path = require('path');
+const Koa = require('koa');
+const static = require('koa-static');
 
-const config = require('./config');
+const config = require('./config.js');
+const env = process.env.NODE_ENV || 'local';
+const cfg = config[env];
+const normalizePort = val => (parseInt(val));
+const port = normalizePort(process.env.PORT || cfg.port || 3000);
 
-const host = config.host;
-if (!host || !Array.isArray(host)) {
-	return console.error('Incorrect config, app exited!');
-}
+const router = require('./routes');
+const app = new Koa();
+app.use(static(path.join(global.dir, 'static')));
+app.use(router.routes()).use(router.allowedMethods());
+app.listen(port);
 
-let data = config.data;
-if (!data) {
-	data = '<h1>Node.js</h1><p>Hello World!</p>';
-}
-
-http.createServer((req, res) => {
-	for (let item of host) {
-		if (item.domain && item.proxy && item.domain.indexOf(req.headers.host) >= 0) {
-			return proxy.web(req, res, { target: item.proxy });
-		}
-	}
-	res.writeHead(200, { 'Content-Type': 'text/html' });
-	res.end(data);
-}).listen(80);
-
-console.log('HTTP server is running.');
+console.log('WeChat HTTP is starting at port ' + port);
