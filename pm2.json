@@ -1,0 +1,12 @@
+{
+	"apps": [{
+		"name": "wechat-http",
+		"script": "apps/http/index.js",
+		"watch": "apps/http",
+		"ignore_watch": ["apps/http/node_modules", "apps/http/static", "apps/http/views"],
+		"env": { "NODE_ENV": "prod" },
+		"log_date_format": "YYYY-MM-DD HH:mm:ss",
+		"error_file": "/data/pm2logs/wechat_http_err.log",
+		"out_file": "/data/pm2logs/wechat_http_out.log"
+	}]
+}
